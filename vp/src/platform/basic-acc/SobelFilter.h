@@ -53,11 +53,13 @@ struct SobelFilter : public sc_module {
         }
       }
       double total = 0;
-      for (unsigned int i = 0; i != MASK_N; ++i) {
+      /*for (unsigned int i = 0; i != MASK_N; ++i) {
         total += val[i] * val[i];
         wait(CLOCK_PERIOD, SC_NS);
-      }
-      int result = static_cast<int>(std::sqrt(total));
+      }*/
+      total = val[0] / 273;
+      wait(CLOCK_PERIOD, SC_NS);
+      int result = static_cast<int>(total);
 
       // cout << (int)result << endl;
 

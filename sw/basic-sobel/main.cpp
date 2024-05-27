@@ -172,7 +172,7 @@ void read_data_from_ACC(char* ADDR, unsigned char* buffer, int len){
 
 int main(int argc, char *argv[]) {
 
-  read_bmp("lena_std_short.bmp");
+  read_bmp("lena_color_256_noise.bmp");
   printf("======================================\n");
   printf("\t  Reading from array\n");
   printf("======================================\n");
@@ -189,8 +189,8 @@ int main(int argc, char *argv[]) {
   for(int i = 0; i < width; i++){
     for(int j = 0; j < height; j++){
       //printf("pixel (%d, %d); \n", i, j);
-      for(int v = -1; v <= 1; v ++){
-        for(int u = -1; u <= 1; u++){
+      for(int v = -2; v <= 2; v ++){
+        for(int u = -2; u <= 2; u++){
           if((v + i) >= 0  &&  (v + i ) < width && (u + j) >= 0 && (u + j) < height ){
             buffer[0] = *(source_bitmap + bytes_per_pixel * ((j + u) * width + (i + v)) + 2);
             buffer[1] = *(source_bitmap + bytes_per_pixel * ((j + u) * width + (i + v)) + 1);
@@ -206,10 +206,10 @@ int main(int argc, char *argv[]) {
         }
       }
       read_data_from_ACC(SOBELFILTER_READ_ADDR, buffer, 4);
-
+      //try
       memcpy(data.uc, buffer, 4);
       total = (data).sint;
-      if (total - THRESHOLD >= 0) {
+      /*if (total - THRESHOLD >= 0) {
         // black
         *(target_bitmap + bytes_per_pixel * (width * i + j) + 2) = BLACK;
         *(target_bitmap + bytes_per_pixel * (width * i + j) + 1) = BLACK;
@@ -219,8 +219,11 @@ int main(int argc, char *argv[]) {
         *(target_bitmap + bytes_per_pixel * (width * i + j) + 2) = WHITE;
         *(target_bitmap + bytes_per_pixel * (width * i + j) + 1) = WHITE;
         *(target_bitmap + bytes_per_pixel * (width * i + j) + 0) = WHITE;
-      }
+      }*/
+      *(target_bitmap + bytes_per_pixel * (width * j + i) + 2) = total;
+      *(target_bitmap + bytes_per_pixel * (width * j + i) + 1) = total;
+      *(target_bitmap + bytes_per_pixel * (width * j + i) + 0) = total;
     }
   }
-  write_bmp("lena_std_out.bmp");
+  write_bmp("out.bmp");
 }
